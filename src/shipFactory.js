@@ -1,7 +1,7 @@
 /*
 Your ‘ships’ will be objects that include their length, the number of times they’ve been hit and whether or not they’ve been sunk.
 */
-function shipFactory(length) {
+function ShipFactory(length) {
 	const ship = {
 		length,
 		hits: 0,
@@ -29,4 +29,4 @@ function shipFactory(length) {
 	return publicShip;
 }
 
-export default shipFactory;
+export default ShipFactory;

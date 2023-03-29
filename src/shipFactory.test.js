@@ -12,6 +12,7 @@ what are the public interface methods of shipFactory?
 - length
 - hit
 - isSunk
+- numberOfHits
 */
 
 describe('shipFactory', () => {
