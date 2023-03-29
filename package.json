@@ -1,0 +1,25 @@
+{
+  "name": "battleship_tdd",
+  "version": "1.0.0",
+  "description": "Battleship Game focused on implementing TDD",
+  "main": "./src/index.js",
+  "type": "module",
+  "scripts": {
+    "jest": "jest --watch --watchALL"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustWaveThings/battleship_TDD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JustWaveThings/battleship_TDD/issues"
+  },
+  "homepage": "https://github.com/JustWaveThings/battleship_TDD#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
+    "jest": "^29.5.0"
+  }
+}
