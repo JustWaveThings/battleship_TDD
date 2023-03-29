@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
-    "jest": "jest --watch --watchALL"
+    "jest": "jest --watch --watchALL --verbose"
   },
   "repository": {
     "type": "git",
