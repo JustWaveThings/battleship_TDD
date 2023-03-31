@@ -89,7 +89,7 @@ describe('GameboardFactory', () => {
 		});
 	});
 
-	describe.skip('allShipsSunk', () => {
+	describe('allShipsSunk', () => {
 		test('should report true when all ships have been sunk', () => {
 			// Test sinking all ships and checking for true
 			const ship = ShipFactory(5);

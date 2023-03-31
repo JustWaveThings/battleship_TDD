@@ -11,6 +11,8 @@ function GameboardFactory() {
 		Array.from({ length: 10 }, (_, j) => [i, j])
 	);
 
+	/* 	let missedAttacksList = []; */
+
 	gameboard.map(row => {
 		row.map(space => {
 			space.push('empty');
@@ -109,10 +111,27 @@ function GameboardFactory() {
 		}
 	}
 
+	/* 	function trackMissedAttacks() {
+		missedAttacks = gameboard.flat().filter(space => space[2] === 'miss');
+		missedAttacks?.forEach(space => {
+			missedAttacksList.push(space);
+		});
+	} */
+
+	function allShipsSunk() {
+		let areAllShipsSunk = false;
+		const allShips = gameboard.flat().filter(space => space[2] === 'ship');
+		if (allShips.length === 0) {
+			areAllShipsSunk = true;
+		}
+		return areAllShipsSunk;
+	}
+
 	return {
 		gameboard,
 		placeShip,
 		receiveAttack,
+		allShipsSunk,
 	};
 }
 
