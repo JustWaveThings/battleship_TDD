@@ -1,17 +1,16 @@
+// add starting status to each square on the board of empty - but keep the rest for future use
+// empty
+// ship
+// miss
+// hit
+// sunk
+// buffer
+
 function GameboardFactory() {
 	const gameboard = Array.from({ length: 10 }, (_, i) =>
 		Array.from({ length: 10 }, (_, j) => [i, j])
 	);
 
-	// add starting status to each square on the board of empty - but keep the rest for future use
-	// empty
-	// ship
-	// miss
-	// hit
-	// sunk
-	// buffer
-
-	// add 'empty' to each space on the board at initialization
 	gameboard.map(row => {
 		row.map(space => {
 			space.push('empty');
@@ -21,14 +20,12 @@ function GameboardFactory() {
 	function placeShip(ship, bowPosition, axis) {
 		const [x, y] = bowPosition;
 		const shipLength = ship.length;
-
 		const tentShipCoords = horizonatalOrVerticalPlacement(
 			axis,
 			shipLength,
 			x,
 			y
 		);
-
 		tentShipCoords.forEach(space => {
 			if (space[2] === 'empty') {
 				space[2] = 'ship';
@@ -100,9 +97,22 @@ function GameboardFactory() {
 		return tentativeShipCoords;
 	}
 
+	function receiveAttack(position) {
+		const [x, y] = position;
+		const space = gameboard[x][y];
+		if (space[2] === 'ship') {
+			space[2] = 'hit';
+		} else if (space[2] === 'miss') {
+			throw new Error('You already attacked this space');
+		} else {
+			space[2] = 'miss';
+		}
+	}
+
 	return {
 		gameboard,
 		placeShip,
+		receiveAttack,
 	};
 }
 

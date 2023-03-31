@@ -65,18 +65,27 @@ describe('GameboardFactory', () => {
 			// Test attacking a ship and checking for a hit
 			const ship = ShipFactory(5);
 			gameboard.placeShip(ship, [0, 0], 'horizontal');
-			expect(gameboard.receiveAttack([0, 0])).toBe('hit');
-		});
-
-		test.skip('should mark a miss when no ship is attacked', () => {
-			// Test attacking an empty spot and checking for a miss
-			expect(gameboard.receiveAttack([0, 0])).toBe('miss');
-		});
-
-		test.skip('should not allow the same spot to be attacked twice', () => {
-			// Test attacking the same spot twice and checking for error
 			gameboard.receiveAttack([0, 0]);
-			expect(() => gameboard.receiveAttack([0, 0])).toThrow(error);
+			expect(gameboard.gameboard[0][0][2]).toBe('hit');
+		});
+
+		test('should mark a miss when no ship is attacked', () => {
+			// Test attacking an empty spot and checking for a miss
+			const ship = ShipFactory(5);
+			gameboard.placeShip(ship, [0, 0], 'horizontal');
+			gameboard.receiveAttack([1, 0]);
+			expect(gameboard.gameboard[1][0][2]).toBe('miss');
+		});
+
+		test('should not allow the same spot to be attacked twice', () => {
+			// Test attacking the same spot twice and checking for error
+			const ship = ShipFactory(5);
+			gameboard.placeShip(ship, [0, 0], 'horizontal');
+			gameboard.receiveAttack([0, 0]);
+			gameboard.receiveAttack([0, 0]);
+			expect(() => gameboard.receiveAttack([0, 0])).toThrow(
+				'You already attacked this space'
+			);
 		});
 	});
 
