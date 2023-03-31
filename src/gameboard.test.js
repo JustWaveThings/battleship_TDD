@@ -131,14 +131,4 @@ describe('GameboardFactory', () => {
 			]);
 		});
 	});
-
-	describe.skip('ships', () => {
-		test('should report hit output from receiveAttack to the correct ship', () => {
-			// Test attacking a ship and checking if the hit is reported to the correct ship
-			const ship = ShipFactory(5);
-			gameboard.placeShip(ship, [0, 0], 'horizontal');
-			gameboard.receiveAttack([0, 0]);
-			expect(gameboard.ships[0].hits).toEqual(1);
-		});
-	});
 });

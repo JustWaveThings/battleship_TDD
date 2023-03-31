@@ -3,7 +3,6 @@
 // ship
 // miss
 // hit
-// sunk
 // buffer
 
 function GameboardFactory() {
