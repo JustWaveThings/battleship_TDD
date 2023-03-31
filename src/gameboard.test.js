@@ -114,7 +114,7 @@ describe('GameboardFactory', () => {
 		});
 	});
 
-	describe.skip('missedAttacks', () => {
+	describe('missedAttacks', () => {
 		test('should keep track of missed attacks', () => {
 			// Test missed attacks and checking the missedAttacks array
 			gameboard.receiveAttack([0, 0]);
@@ -122,12 +122,12 @@ describe('GameboardFactory', () => {
 			gameboard.receiveAttack([0, 2]);
 			gameboard.receiveAttack([0, 3]);
 			gameboard.receiveAttack([0, 4]);
-			expect(gameboard.missedAttacks).toEqual([
-				[0, 0],
-				[0, 1],
-				[0, 2],
-				[0, 3],
-				[0, 4],
+			expect(gameboard.missedAttacksList).toEqual([
+				[0, 0, 'miss'],
+				[0, 1, 'miss'],
+				[0, 2, 'miss'],
+				[0, 3, 'miss'],
+				[0, 4, 'miss'],
 			]);
 		});
 	});
