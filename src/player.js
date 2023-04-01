@@ -23,9 +23,11 @@ function PlayerFactory(name) {
 		);
 		let move = gameboard.gameboard.flat()[randomMove];
 
-		if (move[2] === 'empty' && movesList.includes(move) === false) {
-			movesList.push(move);
-		} else if (move[2] === 'ship' && movesList.includes(move) === false) {
+		if (
+			move[2] === 'empty' ||
+			move[2] === 'buffer' ||
+			(move[2] === 'ship' && movesList.includes(move) === false)
+		) {
 			movesList.push(move);
 		} else {
 			computerMove();
@@ -38,6 +40,7 @@ function PlayerFactory(name) {
 		getPlayerName,
 		playerMove,
 		isCurrentPlayer,
+		computerMove,
 	};
 }
 
