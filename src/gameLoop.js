@@ -45,7 +45,12 @@ function gameLoop() {
 			const x = rowCol[0];
 			const y = rowCol[3];
 			const playedAttack = [x, y];
+			const previousStatus = computerBoard.gameboard[x][y][2];
 			computerBoard.receiveAttack(playedAttack);
+			const newStatus = computerBoard.gameboard[x][y][2];
+			if (previousStatus !== newStatus) {
+				e.target.dataset.status = newStatus;
+			}
 		}
 	}
 	gameStart();

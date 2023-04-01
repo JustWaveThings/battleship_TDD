@@ -93,6 +93,16 @@ section.player-board [data-status='ship'] {
     border: 1px solid  rgba(0, 0, 0, 1);
 }
 
+[data-status='hit'] {
+    background-color: rgba(219, 18, 18, 0.311);
+
+    border: 1px solid  rgba(0, 0, 0, 1);
+}
+
+[data-status='miss'] {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .player-ships,
 .computer-ships {
     display: flex;
