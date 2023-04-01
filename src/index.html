@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship TDD</title>
+
+    <script  src="./gameboard.js" type="module" defer></script>
+    <script  src="./shipFactory.js" type="module" defer></script>
+    <script  src="./player.js" type="module" defer></script>
+    <script  src="./gameLoop.js" type="module" defer></script>
+    <script  src="./display.js" type="module" defer></script>
+    <script  src="./index.js" type="module" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <body>
+        <header class="header">
+            <h1 class="title">Battleship Game - TDD</h1>
+        </header>
+
+        <main class="main">
+            <section class="player-setup">
+                <h2>Player Setup</h2>
+                <form class="player-setup-form">
+                    <label for="player-name">Player Name:</label>
+                    <input type="text" id="player-name" name="player-name" required>
+                    <button type="submit">Start Game</button>
+                </form>
+            </section>
+
+            <section class="game-board">
+                <div class="game-container">
+                    <div class="player-board">
+                        <h3>Player's Board</h3>
+                        <section class="player-board">
+                        </section>
+                    </div>
+                    <div class="opponent-board">
+                        <h3>Opponent's Board</h3>
+                        <section class="computer-board">
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <section class="game-info">
+                <div class="left-game-info">
+                    <h2>Game Info</h2>
+                    <div class="game-status">
+                        <p>Current player: <span class="current-player"></span></p>
+                        <p>Game status: <span class="status"></span></p>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2023 - JustWaveThings</p>
+        </footer>
+</body>
+</html>

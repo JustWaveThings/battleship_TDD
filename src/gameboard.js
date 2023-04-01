@@ -11,6 +11,7 @@ function GameboardFactory() {
 	);
 
 	let missedAttacksList = [];
+	let ships = [];
 
 	gameboard.map(row => {
 		row.map(space => {
@@ -33,6 +34,11 @@ function GameboardFactory() {
 			} else {
 				throw new Error('Invalid ship placement on board');
 			}
+		});
+		ships.push({
+			ship,
+			position: bowPosition,
+			orientation: axis,
 		});
 		shipGiveOneSpaceBuffer();
 	}
@@ -124,12 +130,17 @@ function GameboardFactory() {
 		return areAllShipsSunk;
 	}
 
+	function getShips() {
+		return ships;
+	}
+
 	return {
 		gameboard,
 		placeShip,
 		receiveAttack,
 		allShipsSunk,
 		missedAttacksList,
+		getShips,
 	};
 }
 
