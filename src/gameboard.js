@@ -115,6 +115,7 @@ function GameboardFactory() {
 			space[2] = 'miss';
 			trackMissedAttacks(space);
 		}
+		console.log(space[2]);
 	}
 
 	function trackMissedAttacks(miss) {

@@ -44,12 +44,8 @@ function gameLoop() {
 			const rowCol = e.target.dataset.rowCol;
 			console.log(rowCol);
 
-			/* const computerShot = computerBoard.receiveAttack([row, col]);
-			if (computerShot === 'hit') {
-				e.target.classList.add('hit');
-			} else if (computerShot === 'miss') {
-				e.target.classList.add('miss');
-			} */
+			const playerShot = computerBoard.receiveAttack(rowCol);
+			console.log(playerShot);
 		}
 	}
 	gameStart();
