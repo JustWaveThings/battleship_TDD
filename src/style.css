@@ -91,20 +91,23 @@ section.player-board [data-status='ship'] {
     background-color: rgb(128, 128, 128);
     opacity: .5;
     border: 1px solid  rgba(0, 0, 0, 1);
+    border-style: inset;
 }
 
 [data-status='hit'] {
     background-color: rgba(219, 18, 18, 0.311);
-
+    border-style: inset;
     border: 1px solid  rgba(0, 0, 0, 1);
 }
 
 [data-status='miss'] {
     background-color: rgba(0, 0, 0, 0.1);
+    border-style: inset;
 }
 
 .player-ships,
 .computer-ships {
     display: flex;
     gap: 1rem;
+    border-style: inset;
 }
