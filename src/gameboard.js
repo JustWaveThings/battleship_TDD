@@ -105,10 +105,11 @@ function GameboardFactory() {
 	}
 
 	function receiveAttack(position) {
+		console.log(position, 'received attack');
 		const [x, y] = position;
 
 		const space = gameboard[x][y];
-		if (space[2] === 'ship') {
+		if (space[2] === 'ship' || space[2] === 'hit') {
 			space[2] = 'hit';
 		} else if (space[2] === 'miss') {
 			throw new Error('You already attacked this space');

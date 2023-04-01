@@ -7,7 +7,7 @@ function gameLoop() {
 	function gameStart() {
 		const playerBoard = GameboardFactory();
 		const computerBoard = GameboardFactory();
-
+		console.log(playerBoard, computerBoard);
 		const player = PlayerFactory('Player', playerBoard);
 		const computer = PlayerFactory('Computer', computerBoard);
 
@@ -30,13 +30,14 @@ function gameLoop() {
 		computerBoard.placeShip(submarine, [7, 6], 'horizontal');
 
 		domMethods.renderGame(playerBoard, computerBoard);
-		domMethods.addPlayerAttackListener(playerBoard, computerBoard, computer);
+		domMethods.addPlayerAttackListener(computerBoard, computer);
 	}
 	gameStart();
 
 	function gamePlay() {
 		// game loop
 	}
+	gamePlay();
 
 	function gameEnd() {
 		// display modal that says game over and asks if you want to play again

@@ -8,7 +8,7 @@ const domMethods = {
 	createCellElementPlayer(row, col, content) {
 		const cellElement = document.createElement('div');
 		cellElement.classList.add('cell');
-		cellElement.dataset.status = `${content}`; // Add a data attribute for the cell's status
+		cellElement.dataset.status = `${content}`;
 		cellElement.dataset.rowCol = `${row}, ${col}`;
 		return cellElement;
 	},
@@ -16,7 +16,7 @@ const domMethods = {
 	createCellElementComputer(row, col) {
 		const cellElement = document.createElement('div');
 		cellElement.classList.add('cell');
-		cellElement.dataset.status = ``; // Add a data attribute for the cell's status
+		cellElement.dataset.status = ``;
 		cellElement.dataset.rowCol = `${row}, ${col}`;
 		return cellElement;
 	},
@@ -59,34 +59,35 @@ const domMethods = {
 		this.renderGridPlayer(playerBoard, playerBoardContainer);
 		this.renderGridComputer(computerBoard, computerBoardContainer);
 	},
-	addPlayerAttackListener(playerBoard, computerBoard, computer) {
+	addPlayerAttackListener(computerBoard, computer) {
 		const computerCells = document.querySelectorAll(
 			'section.computer-board .cell'
 		);
 		computerCells.forEach(cell => {
-			cell.addEventListener(
-				'click',
-				e => {
-					this.playerInput(e, playerBoard, computerBoard, computer);
-				},
-				{ once: true }
-			);
+			cell.addEventListener('click', e => {
+				this.playerInput(e, computerBoard, computer);
+			});
 		});
 	},
-	playerInput(e, playerBoard, computerBoard, computer) {
+	playerInput(e, computerBoard) {
 		const rowCol = e.target.dataset.rowCol;
 		const x = rowCol[0];
 		const y = rowCol[3];
 		const playedAttack = [x, y];
 		this.playerMove(computerBoard, playedAttack);
-		const computerAttack = this.computerMove(playerBoard, computer);
-		this.updatePlayerBoardDOM(playerBoard, computerAttack);
 	},
 	playerMove(computerBoard, attack) {
 		const [x, y] = attack;
 		const previousStatus = computerBoard.gameboard[x][y][2];
+
 		computerBoard.receiveAttack(attack);
 		const newStatus = computerBoard.gameboard[x][y][2];
+
+		const computerCell = document.querySelector(
+			`section.computer-board .cell[data-row-col="${x}, ${y}"]`
+		);
+		computerCell.dataset.status = newStatus;
+
 		if (previousStatus !== newStatus) {
 			const computerCell = document.querySelector(
 				`section.computer-board .cell[data-row-col="${x}, ${y}"]`
@@ -97,9 +98,10 @@ const domMethods = {
 	computerMove(playerBoard, computer) {
 		const computerAttack = computer.computerAttack();
 		playerBoard.receiveAttack(computerAttack);
-		//this.updatePlayerBoardDOM(playerBoard, computerAttack);
+		this.updatePlayerBoardDOM(playerBoard, computerAttack);
 		return computerAttack;
 	},
+
 	updatePlayerBoardDOM(playerBoard, computerAttack) {
 		if (computerAttack) {
 			const [x, y] = computerAttack;
@@ -113,3 +115,6 @@ const domMethods = {
 };
 
 export default domMethods;
+
+/* const computerAttack = this.computerMove(playerBoard, computer);
+		this.updatePlayerBoardDOM(playerBoard, computerAttack); */
