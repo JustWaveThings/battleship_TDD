@@ -1,9 +1,6 @@
-import GameboardFactory from './gameboard.js';
-
-let gameboard = GameboardFactory();
 let movesList = [];
 
-function PlayerFactory(name) {
+function PlayerFactory(name, gameboard) {
 	function getPlayerName() {
 		return name;
 	}
@@ -17,6 +14,12 @@ function PlayerFactory(name) {
 		return turn % 2 === 0 ? true : false;
 	}
 
+	function computerAttack() {
+		const move = computerMove();
+		const [x, y] = move;
+		gameboard.receiveAttack(move);
+		return move;
+	}
 	function computerMove() {
 		const randomMove = Math.floor(
 			Math.random() * gameboard.gameboard.flat().length
@@ -30,17 +33,17 @@ function PlayerFactory(name) {
 		) {
 			movesList.push(move);
 		} else {
-			computerMove();
+			return computerMove();
 		}
 
-		return `[${move[0]}, ${move[1]}]`;
+		return [move[0], move[1]];
 	}
 
 	return {
 		getPlayerName,
 		playerMove,
 		isCurrentPlayer,
-		computerMove,
+		computerAttack,
 	};
 }
 

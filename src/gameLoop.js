@@ -5,11 +5,11 @@ import ShipFactory from './shipFactory.js';
 
 function gameLoop() {
 	function gameStart() {
-		const player = PlayerFactory('Player');
-		const computer = PlayerFactory('Computer');
-
 		const playerBoard = GameboardFactory();
 		const computerBoard = GameboardFactory();
+
+		const player = PlayerFactory('Player', playerBoard);
+		const computer = PlayerFactory('Computer', computerBoard);
 
 		const carrier = ShipFactory(5);
 		const battleship = ShipFactory(4);
@@ -30,9 +30,17 @@ function gameLoop() {
 		computerBoard.placeShip(submarine, [7, 6], 'horizontal');
 
 		domMethods.renderGame(playerBoard, computerBoard);
-		domMethods.addPlayerAttackListener(computerBoard);
+		domMethods.addPlayerAttackListener(playerBoard, computerBoard, computer);
 	}
 	gameStart();
+
+	function gamePlay() {
+		// game loop
+	}
+
+	function gameEnd() {
+		// display modal that says game over and asks if you want to play again
+	}
 }
 
 export default gameLoop;
