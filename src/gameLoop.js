@@ -30,28 +30,7 @@ function gameLoop() {
 		computerBoard.placeShip(submarine, [7, 6], 'horizontal');
 
 		domMethods.renderGame(playerBoard, computerBoard);
-
-		const computerCells = document.querySelectorAll(
-			'section.computer-board .cell'
-		);
-		computerCells.forEach(cell => {
-			cell.addEventListener('click', e => {
-				playerInput(e);
-			});
-		});
-
-		function playerInput(e) {
-			const rowCol = e.target.dataset.rowCol;
-			const x = rowCol[0];
-			const y = rowCol[3];
-			const playedAttack = [x, y];
-			const previousStatus = computerBoard.gameboard[x][y][2];
-			computerBoard.receiveAttack(playedAttack);
-			const newStatus = computerBoard.gameboard[x][y][2];
-			if (previousStatus !== newStatus) {
-				e.target.dataset.status = newStatus;
-			}
-		}
+		domMethods.addPlayerAttackListener(computerBoard);
 	}
 	gameStart();
 }

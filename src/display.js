@@ -59,6 +59,52 @@ const domMethods = {
 		this.renderGridPlayer(playerBoard, playerBoardContainer);
 		this.renderGridComputer(computerBoard, computerBoardContainer);
 	},
+	addPlayerAttackListener(computerBoard) {
+		const computerCells = document.querySelectorAll(
+			'section.computer-board .cell'
+		);
+		computerCells.forEach(cell => {
+			cell.addEventListener('click', e => {
+				this.playerInput(e, computerBoard);
+			});
+		});
+	},
+
+	playerInput(e, computerBoard) {
+		const rowCol = e.target.dataset.rowCol;
+		const x = rowCol[0];
+		const y = rowCol[3];
+		const playedAttack = [x, y];
+		const previousStatus = computerBoard.gameboard[x][y][2];
+		computerBoard.receiveAttack(playedAttack);
+		const newStatus = computerBoard.gameboard[x][y][2];
+		if (previousStatus !== newStatus) {
+			e.target.dataset.status = newStatus;
+		}
+	},
 };
 
 export default domMethods;
+
+/*
+const computerCells = document.querySelectorAll(
+	'section.computer-board .cell'
+);
+computerCells.forEach(cell => {
+	cell.addEventListener('click', e => {
+		playerInput(e);
+	});
+});
+
+function playerInput(e) {
+	const rowCol = e.target.dataset.rowCol;
+	const x = rowCol[0];
+	const y = rowCol[3];
+	const playedAttack = [x, y];
+	const previousStatus = computerBoard.gameboard[x][y][2];
+	computerBoard.receiveAttack(playedAttack);
+	const newStatus = computerBoard.gameboard[x][y][2];
+	if (previousStatus !== newStatus) {
+		e.target.dataset.status = newStatus;
+	}
+} */
