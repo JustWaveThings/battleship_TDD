@@ -42,10 +42,10 @@ function gameLoop() {
 
 		function playerInput(e) {
 			const rowCol = e.target.dataset.rowCol;
-			console.log(rowCol);
-
-			const playerShot = computerBoard.receiveAttack(rowCol);
-			console.log(playerShot);
+			const x = rowCol[0];
+			const y = rowCol[3];
+			const playedAttack = [x, y];
+			computerBoard.receiveAttack(playedAttack);
 		}
 	}
 	gameStart();

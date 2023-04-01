@@ -9,7 +9,7 @@ const domMethods = {
 		const cellElement = document.createElement('div');
 		cellElement.classList.add('cell');
 		cellElement.dataset.status = `${content}`; // Add a data attribute for the cell's status
-		cellElement.dataset.rowCol = `[${row}, ${col}]`;
+		cellElement.dataset.rowCol = `${row}, ${col}`;
 		return cellElement;
 	},
 
@@ -17,7 +17,7 @@ const domMethods = {
 		const cellElement = document.createElement('div');
 		cellElement.classList.add('cell');
 		cellElement.dataset.status = ``; // Add a data attribute for the cell's status
-		cellElement.dataset.rowCol = `[${row}, ${col}]`;
+		cellElement.dataset.rowCol = `${row}, ${col}`;
 		return cellElement;
 	},
 

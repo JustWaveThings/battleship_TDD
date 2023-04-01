@@ -106,6 +106,7 @@ function GameboardFactory() {
 
 	function receiveAttack(position) {
 		const [x, y] = position;
+
 		const space = gameboard[x][y];
 		if (space[2] === 'ship') {
 			space[2] = 'hit';
