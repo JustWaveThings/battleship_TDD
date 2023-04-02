@@ -1,12 +1,14 @@
-let movesList = [];
-
 function PlayerFactory(name, gameboard) {
+	let computerMovesList = [];
 	function getPlayerName() {
 		return name;
 	}
 
 	function playerMove(x, y) {
 		return [x, y];
+	}
+	function playerAttack(move) {
+		gameboard.receiveAttack(move);
 	}
 
 	function isCurrentPlayer(turn) {
@@ -29,9 +31,10 @@ function PlayerFactory(name, gameboard) {
 		if (
 			move[2] === 'empty' ||
 			move[2] === 'buffer' ||
-			(move[2] === 'ship' && movesList.includes(move) === false)
+			(move[2] === 'ship' && computerMovesList.includes(move) === false)
 		) {
-			movesList.push(move);
+			computerMovesList.push(move);
+			console.log(computerMovesList, 'computerMovesList');
 		} else {
 			return computerMove();
 		}
@@ -44,6 +47,7 @@ function PlayerFactory(name, gameboard) {
 		playerMove,
 		isCurrentPlayer,
 		computerAttack,
+		playerAttack,
 	};
 }
 

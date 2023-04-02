@@ -29,9 +29,14 @@ function GameboardFactory() {
 			y
 		);
 		tentShipCoords.forEach(space => {
-			if (space[2] === 'empty') {
+			if (
+				space[2] === 'empty' ||
+				space[2] === 'buffer' ||
+				space[2] === 'ship'
+			) {
 				space[2] = 'ship';
 			} else {
+				console.log(space[2], 'space[2]');
 				throw new Error('Invalid ship placement on board');
 			}
 		});
@@ -105,17 +110,14 @@ function GameboardFactory() {
 	}
 
 	function receiveAttack(position) {
-		console.log(position, 'received attack');
 		const [x, y] = position;
 
 		const space = gameboard[x][y];
 		if (space[2] === 'ship' || space[2] === 'hit') {
 			space[2] = 'hit';
-		} else if (space[2] === 'miss') {
-			throw new Error('You already attacked this space');
 		} else {
 			space[2] = 'miss';
-			trackMissedAttacks(space);
+			// trackMissedAttacks(space);
 		}
 	}
 

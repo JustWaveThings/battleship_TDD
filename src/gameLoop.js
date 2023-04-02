@@ -4,7 +4,11 @@ import PlayerFactory from './player.js';
 import ShipFactory from './shipFactory.js';
 
 function gameLoop() {
-	function gameStart() {
+	function gameStart(shipPlacements) {
+		domMethods.createGridItems();
+		domMethods.updatePreviewShip();
+		domMethods.previewListener();
+
 		const playerBoard = GameboardFactory();
 		const computerBoard = GameboardFactory();
 		console.log(playerBoard, computerBoard);
@@ -17,31 +21,49 @@ function gameLoop() {
 		const submarine = ShipFactory(3);
 		const destroyer = ShipFactory(2);
 
-		playerBoard.placeShip(carrier, [0, 0], 'horizontal');
+		domMethods.renderGame(playerBoard, computerBoard);
+		playerBoard.placeShip(
+			carrier,
+			shipPlacements.carrier.position,
+			shipPlacements.carrier.alignment
+		);
+		playerBoard.placeShip(
+			battleship,
+			shipPlacements.battleship.position,
+			shipPlacements.battleship.alignment
+		);
+		playerBoard.placeShip(
+			cruiser,
+			shipPlacements.cruiser.position,
+			shipPlacements.cruiser.alignment
+		);
+		playerBoard.placeShip(
+			submarine,
+			shipPlacements.submarine.position,
+			shipPlacements.submarine.alignment
+		);
+		playerBoard.placeShip(
+			destroyer,
+			shipPlacements.destroyer.position,
+			shipPlacements.destroyer.alignment
+		);
+		/* playerBoard.placeShip(carrier, [carrierX, carrierY], carrierAlignment);
 		playerBoard.placeShip(battleship, [3, 3], 'horizontal');
 		playerBoard.placeShip(cruiser, [5, 0], 'horizontal');
 		playerBoard.placeShip(destroyer, [7, 0], 'horizontal');
-		playerBoard.placeShip(submarine, [7, 6], 'horizontal');
+		playerBoard.placeShip(submarine, [7, 6], 'horizontal'); */
 
-		computerBoard.placeShip(carrier, [0, 0], 'horizontal');
-		computerBoard.placeShip(battleship, [3, 3], 'horizontal');
-		computerBoard.placeShip(cruiser, [5, 0], 'horizontal');
-		computerBoard.placeShip(destroyer, [7, 0], 'horizontal');
-		computerBoard.placeShip(submarine, [7, 6], 'horizontal');
+		computerBoard.placeShip(carrier, [1, 1], 'vertical');
+		computerBoard.placeShip(battleship, [3, 0], 'horizontal');
+		computerBoard.placeShip(cruiser, [5, 3], 'vertical');
+		computerBoard.placeShip(destroyer, [5, 8], 'horizontal');
+		computerBoard.placeShip(submarine, [8, 1], 'horizontal');
 
-		domMethods.renderGame(playerBoard, computerBoard);
-		domMethods.addPlayerAttackListener(computerBoard, computer);
+		domMethods.addPlayerAttackListener(computerBoard, computer, playerBoard);
 	}
-	gameStart();
+	const shipPlacements = domMethods.shipPlacements();
 
-	function gamePlay() {
-		// game loop
-	}
-	gamePlay();
-
-	function gameEnd() {
-		// display modal that says game over and asks if you want to play again
-	}
+	gameStart(shipPlacements);
 }
 
 export default gameLoop;

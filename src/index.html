@@ -13,6 +13,28 @@
     <script  src="./display.js" type="module" defer></script>
     <script  src="./index.js" type="module" defer></script>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 20px);
+            grid-template-rows: repeat(10, 20px);
+            gap: 1px;
+        }
+
+        .grid-item {
+            width: 20px;
+            height: 20px;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 10px;
+            line-height: 20px;
+        }
+
+        .ship {
+            background-color: grey;
+        }
+    </style>
 </head>
 <body>
     <body>
@@ -23,13 +45,81 @@
         <main class="main">
             <section class="player-setup">
                 <h2>Player Setup</h2>
-                <form class="player-setup-form">
-                    <label for="player-name">Player Name:</label>
-                    <input type="text" id="player-name" name="player-name" required>
-                    <button type="submit">Start Game</button>
-                </form>
-            </section>
+                <form id="ship-placement-form">
+                    <h2>Ship Placement</h2>
 
+                    <fieldset>
+                        <legend>Carrier</legend>
+                        <label for="carrier-x">Bow Position X:</label>
+                        <input type="number" id="carrier-x" name="carrier-x" min="0" max="9" value="1" required>
+                        <label for="carrier-y">Bow Position Y:</label>
+                        <input type="number"  id="carrier-y" name="carrier-y" min="0" max="9" value="1" required>
+                        <label for="carrier-align">Alignment:</label>
+                        <select id="carrier-align" name="carrier-align"> required>
+                            <option value="horizontal" >Horizontal</option>
+                            <option value="vertical" selected>Vertical</option>
+                        </select>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Battleship</legend>
+                        <label for="battleship-x">Bow Position X:</label>
+                        <input type="number" id="battleship-x" name="battleship-x" min="0" max="9" value="3" required>
+                        <label for="battleship-y">Bow Position Y:</label>
+                        <input type="number" id="battleship-y" name="battleship-y" min="0" max="9" value="0" required>
+                        <label for="battleship-align">Alignment:</label>
+                        <select id="battleship-align" name="battleship-align" required>
+                            <option value="horizontal" selected>Horizontal</option>
+                            <option value="vertical">Vertical</option>
+                        </select>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Cruiser</legend>
+                        <label for="cruiser-x">Bow Position X:</label>
+                        <input type="number" id="cruiser-x" name="cruiser-x" min="0" max="9" value="5" required>
+                        <label for="cruiser-y">Bow Position Y:</label>
+                        <input type="number" id="cruiser-y" name="cruiser-y" min="0" max="9" value="3" required>
+                        <label for="cruiser-align">Alignment:</label>
+                        <select id="cruiser-align" name="cruiser-align" required>
+                            <option value="horizontal" >Horizontal</option>
+                            <option value="vertical" selected>Vertical</option>
+                        </select>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Submarine</legend>
+                        <label for="submarine-x">Bow Position X:</label>
+                        <input type="number" id="submarine-x" name="submarine-x" min="0" max="9" value="5" required>
+                        <label for="submarine-y">Bow Position Y:</label>
+                        <input type="number" id="submarine-y" name="submarine-y" min="0" max="9" value="8" required>
+                        <label for="submarine-align">Alignment:</label>
+                        <select id="submarine-align" name="submarine-align" required>
+                            <option value="horizontal" selected>Horizontal</option>
+                            <option value="vertical">Vertical</option>
+                        </select>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Destroyer</legend>
+                        <label for="destroyer-x">Bow Position X:</label>
+                        <input type="number" id="destroyer-x" name="destroyer-x" min="0" max="9" value="8" required>
+                        <label for="destroyer-y">Bow Position Y:</label>
+                        <input type="number" id="destroyer-y" name="destroyer-y" min="0" max="9" value="1" required>
+                        <label for="destroyer-align">Alignment:</label>
+                        <select id="destroyer-align" name="destroyer-align" required>
+                        <option value="horizontal" selected>Horizontal</option>
+                        <option value="vertical">Vertical</option>
+                        </select>
+                        </fieldset>
+
+    <button type="submit">Submit</button>
+</form>
+    <div class="preview">Ship Preview
+        <div class="grid" id="grid"></div>
+
+    </div>
+            </section>
             <section class="game-board">
                 <div class="game-container">
                     <div class="player-board">
@@ -43,18 +133,6 @@
                         </section>
                     </div>
                 </div>
-            </section>
-
-            <section class="game-info">
-                <div class="left-game-info">
-                    <h2>Game Info</h2>
-                    <div class="game-status">
-                        <p>Current player: <span class="current-player"></span></p>
-                        <p>Game status: <span class="status"></span></p>
-                    </div>
-                </div>
-
-            </section>
         </main>
 
         <footer class="footer">
