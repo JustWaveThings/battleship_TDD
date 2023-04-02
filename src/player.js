@@ -1,4 +1,4 @@
-import GameboardFactory from './gameboard';
+import GameboardFactory from './gameboard.js';
 
 let gameboard = GameboardFactory();
 let movesList = [];

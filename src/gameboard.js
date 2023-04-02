@@ -5,7 +5,7 @@
 // hit
 // buffer
 
-function GameboardFactory() {
+function GameboardFactory(player, shipList) {
 	const gameboard = Array.from({ length: 10 }, (_, i) =>
 		Array.from({ length: 10 }, (_, j) => [i, j])
 	);
@@ -125,6 +125,8 @@ function GameboardFactory() {
 	}
 
 	return {
+		player,
+		shipList,
 		gameboard,
 		placeShip,
 		receiveAttack,
