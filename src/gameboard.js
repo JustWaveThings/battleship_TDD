@@ -27,14 +27,20 @@ function GameboardFactory(player, shipList) {
 			x,
 			y
 		);
-		tentShipCoords.forEach(space => {
+		tentShipCoords.forEach((space, index) => {
 			if (space[2] === 'empty') {
-				space[2] = 'ship';
+				if (index === 0) {
+					space[2] = 'ship bow';
+				} else {
+					space[2] = 'ship';
+				}
 			} else {
-				throw new Error('Invalid ship placement on board');
+				/* throw new Error('Invalid ship placement on board'); */
+				return false;
 			}
 		});
 		shipGiveOneSpaceBuffer();
+		return true;
 	}
 
 	function shipGiveOneSpaceBuffer() {
@@ -77,7 +83,7 @@ function GameboardFactory(player, shipList) {
 	function horizonatalOrVerticalPlacement(axis, shipLength, x, y) {
 		let tentativeShipCoords = [];
 		if (axis === 'horizontal') {
-			if (x + shipLength > 10) {
+			if (y + shipLength > 9) {
 				throw new Error('Invalid ship placement off board');
 			}
 			for (let i = 0; i < shipLength; i++) {
@@ -86,7 +92,7 @@ function GameboardFactory(player, shipList) {
 			}
 		}
 		if (axis === 'vertical') {
-			if (y + shipLength > 10) {
+			if (x + shipLength > 9) {
 				throw new Error('Invalid ship placement off board');
 			}
 			for (let i = 0; i < shipLength; i++) {

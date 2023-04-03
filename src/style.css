@@ -80,11 +80,17 @@ body {
     flex-direction: row;
     justify-content: space-evenly;
     align-items: flex-start;
-
     background-color: #f5f5f5;
 }
 
-section.player-board [data-status='ship'] {
+.player-board [data-status='ship bow'] {
+    background-color: rgba(85, 192, 9, 0.544);
+    opacity: .5;
+    border: 1px solid  rgba(0, 0, 0, 1);
+    border-style: inset;
+}
+
+.player-board [data-status='ship'] {
     background-color: rgb(128, 128, 128);
     opacity: .5;
     border: 1px solid  rgba(0, 0, 0, 1);

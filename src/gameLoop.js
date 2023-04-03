@@ -33,15 +33,31 @@ function newGameLoop() {
 		newComputer.getPlayerName()
 	);
 
-	console.log(domPlayerBoard);
-	console.log(domComputerBoard);
-
 	const playerBoardContainer = document.querySelector('section.player-board');
 	const computerBoardContainer = document.querySelector(
 		'section.computer-board'
 	);
 	playerBoardContainer.appendChild(domPlayerBoard);
 	computerBoardContainer.appendChild(domComputerBoard);
+
+	newComputerBoard.placeShip(playerShips[4], [0, 0], 'vertical');
+	newComputerBoard.placeShip(playerShips[3], [3, 3], 'horizontal');
+	newComputerBoard.placeShip(playerShips[2], [5, 3], 'vertical');
+	newComputerBoard.placeShip(playerShips[1], [7, 6], 'horizontal');
+	newComputerBoard.placeShip(playerShips[0], [0, 5], 'horizontal');
+
+	newPlayerBoard.placeShip(playerShips[4], [0, 0], 'horizontal');
+	newPlayerBoard.placeShip(playerShips[3], [2, 0], 'horizontal');
+	newPlayerBoard.placeShip(playerShips[2], [4, 0], 'horizontal');
+	newPlayerBoard.placeShip(playerShips[1], [6, 0], 'horizontal');
+	newPlayerBoard.placeShip(playerShips[0], [8, 0], 'horizontal');
+
+	console.log(newPlayerBoard.gameboard);
+	domNewMethods.renderPlayerGameboard(
+		newPlayerBoard.gameboard,
+		newPlayer.getPlayerName()
+	);
+	console.log(newComputerBoard.gameboard);
 }
 
 newGameLoop();
