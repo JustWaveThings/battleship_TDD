@@ -25,6 +25,7 @@ function newGameLoop() {
 	const newComputerBoard = GameboardFactory(newComputer, computerShips);
 
 	console.log(newPlayerBoard.gameboard);
+	console.log(newComputerBoard.gameboard);
 	const domPlayerBoard = domNewMethods.createGameboard(
 		newPlayerBoard.gameboard,
 		newPlayer.getPlayerName()
@@ -41,11 +42,11 @@ function newGameLoop() {
 	playerBoardContainer.appendChild(domPlayerBoard);
 	computerBoardContainer.appendChild(domComputerBoard);
 
-	/* 	newComputerBoard.placeShip(playerShips[4], [0, 0], 'vertical');
-	newComputerBoard.placeShip(playerShips[3], [3, 3], 'horizontal');
-	newComputerBoard.placeShip(playerShips[2], [5, 3], 'vertical');
-	newComputerBoard.placeShip(playerShips[1], [7, 6], 'horizontal');
-	newComputerBoard.placeShip(playerShips[0], [0, 5], 'horizontal'); */
+	newComputerBoard.placeShip(computerShips[4], '0, 0', 'vertical');
+	newComputerBoard.placeShip(computerShips[3], '3, 3', 'horizontal');
+	newComputerBoard.placeShip(computerShips[2], '5, 3', 'vertical');
+	newComputerBoard.placeShip(computerShips[1], '7, 6', 'horizontal');
+	newComputerBoard.placeShip(computerShips[0], '0, 5', 'horizontal');
 
 	/* 	newPlayerBoard.placeShip(playerShips[4], [0, 0], 'horizontal');
 	newPlayerBoard.placeShip(playerShips[3], [2, 0], 'horizontal');
