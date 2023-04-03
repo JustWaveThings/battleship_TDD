@@ -88,7 +88,8 @@ function GameboardFactory(player, shipList) {
 	function horizonatalOrVerticalPlacement(axis, shipLength, x, y) {
 		let tentativeShipCoords = [];
 		if (axis === 'horizontal') {
-			if (y + shipLength > 9) {
+			if (y + shipLength > 10) {
+				console.log('y + shipLength > 10', y + shipLength);
 				alert(
 					'Invalid ship placement, ship must be completely on the gameboard, reload page and try again'
 				);
@@ -100,7 +101,8 @@ function GameboardFactory(player, shipList) {
 			}
 		}
 		if (axis === 'vertical') {
-			if (x + shipLength > 9) {
+			if (x + shipLength > 10) {
+				console.log('x + shipLength > 10', x + shipLength);
 				alert(
 					'Invalid ship placement, ship must be completely on the gameboard, reload page and try again'
 				);
