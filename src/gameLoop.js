@@ -24,8 +24,12 @@ function newGameLoop() {
 	const newPlayerBoard = GameboardFactory(newPlayer, playerShips);
 	const newComputerBoard = GameboardFactory(newComputer, computerShips);
 
-	console.log(newPlayerBoard.gameboard);
-	console.log(newComputerBoard.gameboard);
+	newComputerBoard.placeShip(computerShips[4], '0, 0', 'vertical');
+	newComputerBoard.placeShip(computerShips[3], '3, 3', 'horizontal');
+	newComputerBoard.placeShip(computerShips[2], '5, 3', 'vertical');
+	newComputerBoard.placeShip(computerShips[1], '7, 6', 'horizontal');
+	newComputerBoard.placeShip(computerShips[0], '0, 5', 'horizontal');
+
 	const domPlayerBoard = domNewMethods.createGameboard(
 		newPlayerBoard.gameboard,
 		newPlayer.getPlayerName()
@@ -42,18 +46,6 @@ function newGameLoop() {
 	playerBoardContainer.appendChild(domPlayerBoard);
 	computerBoardContainer.appendChild(domComputerBoard);
 
-	newComputerBoard.placeShip(computerShips[4], '0, 0', 'vertical');
-	newComputerBoard.placeShip(computerShips[3], '3, 3', 'horizontal');
-	newComputerBoard.placeShip(computerShips[2], '5, 3', 'vertical');
-	newComputerBoard.placeShip(computerShips[1], '7, 6', 'horizontal');
-	newComputerBoard.placeShip(computerShips[0], '0, 5', 'horizontal');
-
-	/* 	newPlayerBoard.placeShip(playerShips[4], [0, 0], 'horizontal');
-	newPlayerBoard.placeShip(playerShips[3], [2, 0], 'horizontal');
-	newPlayerBoard.placeShip(playerShips[2], [4, 0], 'horizontal');
-	newPlayerBoard.placeShip(playerShips[1], [6, 0], 'horizontal');
-	newPlayerBoard.placeShip(playerShips[0], [8, 0], 'horizontal'); */
-
 	domNewMethods.placePlayerShipsAtStart(
 		playerShips,
 		newPlayerBoard,
@@ -66,6 +58,16 @@ function newGameLoop() {
 		newPlayerBoard.gameboard,
 		newPlayer.getPlayerName()
 	);
+
+	domNewMethods.addPlayerAttackListener(
+		newPlayer,
+		newComputerBoard.receiveAttack
+	);
+
+	// console.log(newComputerBoard.gameboard);
+	newComputerBoard.receiveAttack();
 }
 
 newGameLoop();
+
+export default newGameLoop;

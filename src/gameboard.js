@@ -1,10 +1,3 @@
-// add starting status to each square on the board of empty - but keep the rest for future use
-// empty
-// ship
-// miss
-// hit
-// buffer
-
 function GameboardFactory(player, shipList) {
 	const gameboard = Array.from({ length: 10 }, (_, i) =>
 		Array.from({ length: 10 }, (_, j) => [i, j])
@@ -29,7 +22,7 @@ function GameboardFactory(player, shipList) {
 			x,
 			y
 		);
-		console.log(x, y, typeof x, typeof y);
+
 		tentShipCoords.forEach((space, index) => {
 			if (space[2] === 'empty') {
 				if (index === 0) {
@@ -61,7 +54,7 @@ function GameboardFactory(player, shipList) {
 		];
 		gameboard.forEach((row, i) => {
 			row.forEach((space, j) => {
-				if (space[2] === 'ship') {
+				if (space[2] === 'ship' || space[2] === 'ship bow') {
 					relativePositionOfSurroundingSquares.forEach(([x, y]) => {
 						const bufferRow = i + x;
 						const bufferCol = j + y;
@@ -118,20 +111,32 @@ function GameboardFactory(player, shipList) {
 	}
 
 	function receiveAttack(position) {
-		const [x, y] = position;
+		if (position === undefined) {
+			return;
+		}
+		console.log(position); // prints the gameboard Array
+		console.log(gameboard);
+
+		const x = +position[0];
+		const y = +position[2];
 		const space = gameboard[x][y];
-		if (space[2] === 'ship') {
+		console.log(space);
+		console.log(space[2], 'from gameboard array');
+		if (space[2] === 'ship' || space[2] === 'ship bow') {
 			space[2] = 'hit';
 		} else if (space[2] === 'miss') {
+			alert('You already attacked this space - you lose your turn');
 			throw new Error('You already attacked this space');
 		} else {
 			space[2] = 'miss';
 			trackMissedAttacks(space);
 		}
+		console.log(space, 'after the attack');
 	}
 
 	function trackMissedAttacks(miss) {
 		missedAttacksList.push(miss);
+		console.log(missedAttacksList, 'missed attacks list');
 	}
 
 	function allShipsSunk() {

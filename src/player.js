@@ -8,8 +8,9 @@ function PlayerFactory(name) {
 		return name;
 	}
 
-	function playerMove(x, y) {
-		return [x, y];
+	function playerAttack(position) {
+		console.log(' in playerAttack in player.js', position);
+		gameboard.receiveAttack(position);
 	}
 
 	function isCurrentPlayer(turn) {
@@ -17,7 +18,7 @@ function PlayerFactory(name) {
 		return turn % 2 === 0 ? true : false;
 	}
 
-	function computerMove() {
+	/* 	function computerAttack() {
 		const randomMove = Math.floor(
 			Math.random() * gameboard.gameboard.flat().length
 		);
@@ -28,16 +29,16 @@ function PlayerFactory(name) {
 		} else if (move[2] === 'ship' && movesList.includes(move) === false) {
 			movesList.push(move);
 		} else {
-			computerMove();
+			computerAttack();
 		}
-
 		return `[${move[0]}, ${move[1]}]`;
 	}
-
+ */
 	return {
 		getPlayerName,
-		playerMove,
+		playerAttack,
 		isCurrentPlayer,
+		// computerAttack,
 	};
 }
 

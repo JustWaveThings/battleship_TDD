@@ -1,7 +1,6 @@
 const domNewMethods = {
 	initializeEventListeners(playerBoardContainer, gameboard, player) {
 		playerBoardContainer.addEventListener('click', e => {
-			console.log('clicked player board', e.target.dataset.rowCol);
 			this.renderPlayerGameboard(gameboard, player);
 		});
 	},
@@ -24,9 +23,7 @@ const domNewMethods = {
 		cell.classList.add('cell');
 		cell.dataset.status = ``;
 		cell.dataset.rowCol = `${row}, ${col}`;
-		cell.addEventListener('click', () => {
-			console.log('clicked {row, col - computer board}: ', row, col);
-		});
+
 		return cell;
 	},
 	createGameboard(gameboard, player) {
@@ -106,7 +103,6 @@ const domNewMethods = {
 				// Update the instructions text with the new orientation
 				instructionsContainer.textContent = `Click the same square to change the orientation of the ship. Current orientation: ${selectedCell.dataset.orientation}`;
 
-				console.log(orientation);
 				this.renderPlayerGameboard(gameboard, player);
 			}
 		};
@@ -122,7 +118,6 @@ const domNewMethods = {
 					// remove orientation attribute from cell
 					selectedCell.removeAttribute('data-orientation');
 					shipIndex++;
-					console.log(shipIndex, 'shipIndex');
 
 					if (shipIndex === playerShips.length) {
 						// All ships placed, hide instructions and remove event listener
@@ -161,6 +156,42 @@ const domNewMethods = {
 
 		boardContainer.addEventListener('click', handleCellClick);
 		nextShipButton.addEventListener('click', handleNextShipButtonClick);
+	},
+
+	addPlayerAttackListener(newPlayer, callback) {
+		const computerCells = document.querySelectorAll(
+			'section.computer-board .cell'
+		);
+		computerCells.forEach(cell => {
+			cell.addEventListener('click', e => this.playerInput(e, callback));
+		});
+	},
+
+	playerInput(e, callback) {
+		const cellClicked = e.target.dataset.rowCol;
+		console.log('player attack computer board', cellClicked);
+		callback(cellClicked);
+	},
+	computerInput(playerBoard, computer) {
+		const computerAttack = computer.computerAttack();
+		const [x, y] = computerAttack;
+		playerBoard.receiveAttack(computerAttack);
+		const newStatus = playerBoard.gameboard[x][y][2];
+		const playerCell = document.querySelector(
+			`section.player-board .cell[data-row-col="${x}, ${y}"]`
+		);
+		playerCell.dataset.status = newStatus;
+	},
+	gameEnd(computerBoard, playerBoard) {
+		// display modal that says game over and asks if you want to play again
+		// if yes, call gameStart()
+		// if no, close modal
+		if (computerBoard.allShipsSunk()) {
+			console.log('player wins');
+		}
+		if (playerBoard.allShipsSunk()) {
+			console.log('computer wins');
+		}
 	},
 };
 export default domNewMethods;
