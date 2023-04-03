@@ -1,15 +1,22 @@
 const domNewMethods = {
+	initializeEventListeners(playerBoardContainer, gameboard, player) {
+		playerBoardContainer.addEventListener('click', e => {
+			console.log('clicked player board', e.target.dataset.rowCol);
+			this.renderPlayerGameboard(gameboard, player);
+		});
+	},
+
 	createBoardContainer() {
 		const boardContainer = document.createElement('div');
 		boardContainer.classList.add('board-container');
 		return boardContainer;
 	},
+
 	createCells(row, col, content) {
 		const cell = document.createElement('div');
 		cell.classList.add('cell');
 		cell.dataset.status = `${content}`;
 		cell.dataset.rowCol = `${row}, ${col}`;
-		cell.dataset.clickCounter = 0;
 		return cell;
 	},
 	createComputerCells(row, col) {
@@ -20,7 +27,6 @@ const domNewMethods = {
 		cell.addEventListener('click', () => {
 			console.log('clicked {row, col - computer board}: ', row, col);
 		});
-
 		return cell;
 	},
 	createGameboard(gameboard, player) {
@@ -46,6 +52,7 @@ const domNewMethods = {
 				boardContainer.appendChild(rowElement);
 				row.forEach((space, j) => {
 					const cell = this.createCells(i, j, space[2]);
+					cell.dataset.orientation = 'horizontal';
 					rowElement.appendChild(cell);
 				});
 			});
@@ -65,75 +72,93 @@ const domNewMethods = {
 		});
 	},
 
-	placePlayerShipsAtStart(playerShips, playerBoard) {
+	placePlayerShipsAtStart(playerShips, playerBoard, gameboard, player) {
 		const boardContainer = document.querySelector('.board-container');
 		const instructionsContainer = document.querySelector(
 			'.instructions-container'
 		);
+		const instructionsDiv = document.querySelector('.instructions');
 		const nextShipButton = document.querySelector('.next-ship-button');
 		let shipIndex = 0;
+		let selectedCell;
 
-		function handleCellClick(e) {
-			if (e.target.classList.contains('cell')) {
-				const cell = e.target.data - rowCol;
+		const handleCellClick = e => {
+			selectedCell = e.target;
+			selectedCell.classList.add('ship');
+			selectedCell.dataset.status = 'ship bow';
 
-				// Show ship orientation instructions
-				instructionsContainer.textContent =
-					'Click the same spot to change the orientation of the ship.';
-				nextShipButton.style.display = 'block';
+			// Add orientation information to the instructions text
+			instructionsContainer.textContent = `Click the same square to change the orientation of the ship. Current orientation: ${selectedCell.dataset.orientation}`;
 
-				// Change event listener to handle ship orientation
-				boardContainer.removeEventListener('click', handleCellClick);
-				boardContainer.addEventListener('click', e =>
-					handleOrientationClick(e, cell)
-				);
-			}
-		}
-		function handleOrientationClick(e, cell) {
-			if (e.target.classList.contains('cell')) {
+			nextShipButton.style.display = 'flex';
+			boardContainer.addEventListener('click', handleOrientationClick);
+			this.renderPlayerGameboard(gameboard, player);
+		};
+
+		const handleOrientationClick = e => {
+			if (selectedCell) {
 				const orientation =
 					e.target.dataset.orientation === 'horizontal'
 						? 'vertical'
 						: 'horizontal';
-				e.target.dataset.orientation = orientation;
+
+				selectedCell.dataset.orientation = orientation;
+				// Update the instructions text with the new orientation
+				instructionsContainer.textContent = `Click the same square to change the orientation of the ship. Current orientation: ${selectedCell.dataset.orientation}`;
+
+				console.log(orientation);
+				this.renderPlayerGameboard(gameboard, player);
 			}
-		}
-		function handleNextShipButtonClick() {
-			const selectedCell = boardContainer.querySelector(
-				'.cell[data-orientation]'
-			);
-			const cell = selectedCell.dataset.rowCol;
-			const orientation = selectedCell.dataset.orientation;
+		};
+		const handleNextShipButtonClick = e => {
+			if (selectedCell) {
+				const orientation = selectedCell.dataset.orientation;
+				const position = selectedCell.dataset.rowCol;
 
-			// Check if ship placement is valid
-			if (playerBoard.placeShip(playerShips[shipIndex], cell, orientation)) {
-				shipIndex++;
-
-				if (shipIndex === playerShips.length) {
-					// All ships placed, hide instructions and remove event listener
-					instructionsContainer.style.display = 'none';
-					nextShipButton.style.display = 'none';
-					boardContainer.removeEventListener('click', handleOrientationClick);
-				} else {
-					// Show instructions for the next ship
-					instructionsContainer.textContent = `Place the ship of length ${playerShips[shipIndex].length} on the board by clicking anywhere on the gameboard.`;
-					nextShipButton.style.display = 'none';
+				// Check if ship placement is valid
+				if (
+					playerBoard.placeShip(playerShips[shipIndex], position, orientation)
+				) {
+					// remove orientation attribute from cell
 					selectedCell.removeAttribute('data-orientation');
-				}
-			} else {
-				// Invalid ship placement, prompt user to reposition ship
-				alert('Invalid ship placement, please try again.');
-			}
+					shipIndex++;
+					console.log(shipIndex, 'shipIndex');
 
-			// Revert back to the initial event listener for ship placement
-			boardContainer.removeEventListener('click', handleOrientationClick);
-			boardContainer.addEventListener('click', handleCellClick);
-		}
+					if (shipIndex === playerShips.length) {
+						// All ships placed, hide instructions and remove event listener
+						this.renderPlayerGameboard(gameboard, player);
+						instructionsContainer.style.display = 'none';
+						instructionsDiv.style.display = 'none';
+						nextShipButton.style.display = 'none';
+						selectedCell.classList.remove('ship');
+						selectedCell.removeAttribute('data-orientation');
+						boardContainer.removeEventListener('click', handleOrientationClick);
+						boardContainer.removeEventListener('click', handleCellClick);
+						return;
+					} else {
+						// Show instructions for the next ship
+						instructionsContainer.textContent = `Place the ship of length ${playerShips[shipIndex].length} on the board by clicking anywhere on the gameboard.`;
+						nextShipButton.style.display = 'none';
+						selectedCell.removeAttribute('data-orientation');
+					}
+				} else {
+					// Invalid ship placement, prompt user to reposition ship
+					alert('Invalid ship placement, please try again.');
+					return;
+				}
+
+				// Revert back to the initial event listener for ship placement
+				//boardContainer.removeEventListener('click', handleOrientationClick);
+				boardContainer.addEventListener('click', handleCellClick);
+				this.renderPlayerGameboard(gameboard, player);
+			}
+		};
 
 		// Show initial instructions
-		instructionsContainer.textContent = `Place the ship of length ${playerShips[shipIndex].length} on the board by clicking anywhere on the gameboard.`;
+		instructionsContainer.textContent = `Place the ship of length ${playerShips[shipIndex].length} on the board by clicking anywhere on the gameboard. Note: any ship must have at least 1 square buffer between it and any other ship and cannot be drawn outside of the gameboard.`;
 
 		// Start the ship placement loop
+
 		boardContainer.addEventListener('click', handleCellClick);
 		nextShipButton.addEventListener('click', handleNextShipButtonClick);
 	},

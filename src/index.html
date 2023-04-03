@@ -1,51 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship TDD</title>
 
-    <script  src="./gameboard.js" type="module" defer></script>
-    <script  src="./shipFactory.js" type="module" defer></script>
-    <script  src="./player.js" type="module" defer></script>
-    <script  src="./gameLoop.js" type="module" defer></script>
-    <script  src="./dom.js" type="module" defer></script>
-    <script  src="./index.js" type="module" defer></script>
+    <script src="./gameboard.js" type="module" defer></script>
+    <script src="./shipFactory.js" type="module" defer></script>
+    <script src="./player.js" type="module" defer></script>
+    <script src="./gameLoop.js" type="module" defer></script>
+    <script src="./dom.js" type="module" defer></script>
+    <script src="./index.js" type="module" defer></script>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./meyer_reset.css">
+
 <body>
-        <header class="header">
-            <h1 class="title">Battleship Game - TDD</h1>
-        </header>
+    <header class="header">
+        <h1 class="title">Battleship Game - TDD</h1>
+    </header>
 
-        <main class="main">
-            <section class="instructions-container">
-                <form id="ship-placement-form">
-                    <h2>Ship Placement</h2>
-
-
-    <button type="button" class="next-ship-button" style="display: none"; >Next</button>
-</form>
-    </div>
-            </section>
-            <section class="game-board">
-                <div class="game-container">
-                    <div class="board-container player">
-                        <h3>Player's Board</h3>
-                        <section class="player-board">
-                        </section>
-                    </div>
-                    <div class="board-container computer">
-                        <h3>Opponent's Board</h3>
-                        <section class="computer-board">
-                        </section>
-                    </div>
+    <main class="main">
+        <div class="instructions">
+            <h2>Ship Placement</h2>
+            <section class="instructions-container"></section>
+            <button type="button" class="next-ship-button">Next</button>
+        </div>
+        <section class="game-board">
+            <div class="game-container">
+                <div class="board-container player">
+                    <h3>Player's Board</h3>
+                    <section class="player-board">
+                    </section>
                 </div>
-        </main>
+                <div class="board-container computer">
+                    <h3>Opponent's Board</h3>
+                    <section class="computer-board">
+                    </section>
+                </div>
+            </div>
+    </main>
 
-        <footer class="footer">
+    <footer class="footer">
 
-        </footer>
+    </footer>
 </body>
+
 </html>
