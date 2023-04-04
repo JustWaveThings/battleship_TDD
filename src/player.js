@@ -1,6 +1,3 @@
-import GameboardFactory from './gameboard.js';
-
-let gameboard = GameboardFactory();
 let movesList = [];
 
 function PlayerFactory(name) {
@@ -18,7 +15,7 @@ function PlayerFactory(name) {
 		return turn % 2 === 0 ? true : false;
 	}
 
-	/* 	function computerAttack() {
+	function computerAttack() {
 		const randomMove = Math.floor(
 			Math.random() * gameboard.gameboard.flat().length
 		);
@@ -31,14 +28,14 @@ function PlayerFactory(name) {
 		} else {
 			computerAttack();
 		}
-		return `[${move[0]}, ${move[1]}]`;
+		return `${move[0]}, ${move[1]}`;
 	}
- */
+
 	return {
 		getPlayerName,
 		playerAttack,
 		isCurrentPlayer,
-		// computerAttack,
+		computerAttack: gameboard => computerAttack(gameboard),
 	};
 }
 

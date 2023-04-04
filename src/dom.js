@@ -1,3 +1,5 @@
+import { newComputer, newPlayerBoard } from './gameLoop.js';
+
 const domNewMethods = {
 	initializeEventListeners(playerBoardContainer, gameboard, player) {
 		playerBoardContainer.addEventListener('click', e => {
@@ -158,7 +160,7 @@ const domNewMethods = {
 		nextShipButton.addEventListener('click', handleNextShipButtonClick);
 	},
 
-	addPlayerAttackListener(newPlayer, callback) {
+	addPlayerAttackListener(callback) {
 		const computerCells = document.querySelectorAll(
 			'section.computer-board .cell'
 		);
@@ -171,9 +173,10 @@ const domNewMethods = {
 		const cellClicked = e.target.dataset.rowCol;
 		console.log('player attack computer board', cellClicked);
 		callback(cellClicked);
+		this.computerInput(newPlayerBoard, newComputer);
 	},
 	computerInput(playerBoard, computer) {
-		const computerAttack = computer.computerAttack();
+		const computerAttack = computer.computerAttack(newPlayerBoard.gameboard);
 		const [x, y] = computerAttack;
 		playerBoard.receiveAttack(computerAttack);
 		const newStatus = playerBoard.gameboard[x][y][2];
