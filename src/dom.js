@@ -165,7 +165,12 @@ const domNewMethods = {
 			'section.computer-board .cell'
 		);
 		computerCells.forEach(cell => {
-			cell.addEventListener('click', e => this.playerInput(e, callback));
+			cell.addEventListener('click', e => {
+				const { rowCol } = e.target.dataset;
+				console.log('player attack computer board', rowCol);
+				callback(rowCol);
+				this.computerInput(newPlayerBoard, newComputer);
+			});
 		});
 	},
 
@@ -176,15 +181,28 @@ const domNewMethods = {
 		this.computerInput(newPlayerBoard, newComputer);
 	},
 	computerInput(playerBoard, computer) {
-		const computerAttack = computer.computerAttack(newPlayerBoard.gameboard);
-		const [x, y] = computerAttack;
+		let validAttack = false;
+		let computerAttack;
+
+		while (!validAttack) {
+			computerAttack = computer.computerAttack(playerBoard.gameboard);
+			const x = +computerAttack[0];
+			const y = +computerAttack[3];
+
+			console.log(
+				playerBoard.gameboard[x][y][2],
+				'- playerboard status for that cell'
+			);
+			const newStatus = playerBoard.gameboard[x][y][2];
+
+			if (newStatus === 'empty' || newStatus === 'buffer') {
+				validAttack = true;
+			}
+		}
+
 		playerBoard.receiveAttack(computerAttack);
-		const newStatus = playerBoard.gameboard[x][y][2];
-		const playerCell = document.querySelector(
-			`section.player-board .cell[data-row-col="${x}, ${y}"]`
-		);
-		playerCell.dataset.status = newStatus;
 	},
+
 	gameEnd(computerBoard, playerBoard) {
 		// display modal that says game over and asks if you want to play again
 		// if yes, call gameStart()

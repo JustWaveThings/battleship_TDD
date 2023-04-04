@@ -114,17 +114,15 @@ function GameboardFactory(player, shipList) {
 		if (position === undefined) {
 			return;
 		}
-		console.log(position); // prints the gameboard Array
-		console.log(gameboard);
-
-		const x = +position[0];
-		const y = +position[2];
+		const x = [...position][0];
+		const y = [...position][3];
 		const space = gameboard[x][y];
-		console.log(space);
-		console.log(space[2], 'from gameboard array');
+		console.log(x, y, typeof x, typeof y, 'x and y', space, 'space');
+
+		console.log(space, 'from gameboard array');
 		if (space[2] === 'ship' || space[2] === 'ship bow') {
 			space[2] = 'hit';
-		} else if (space[2] === 'miss') {
+		} else if (space[2] === 'miss' || space[2] === 'hit') {
 			alert('You already attacked this space - you lose your turn');
 			throw new Error('You already attacked this space');
 		} else {
@@ -132,6 +130,7 @@ function GameboardFactory(player, shipList) {
 			trackMissedAttacks(space);
 		}
 		console.log(space, 'after the attack');
+		console.log('-------an attack over ----------');
 	}
 
 	function trackMissedAttacks(miss) {

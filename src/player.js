@@ -4,38 +4,38 @@ function PlayerFactory(name) {
 	function getPlayerName() {
 		return name;
 	}
-
+	/*
 	function playerAttack(position) {
 		console.log(' in playerAttack in player.js', position);
 		gameboard.receiveAttack(position);
-	}
+	} */
 
 	function isCurrentPlayer(turn) {
 		turn++;
 		return turn % 2 === 0 ? true : false;
 	}
 
-	function computerAttack() {
+	function computerAttack(playerGameboard) {
 		const randomMove = Math.floor(
-			Math.random() * gameboard.gameboard.flat().length
+			Math.random() * playerGameboard.flat().length
 		);
-		let move = gameboard.gameboard.flat()[randomMove];
+		let move = playerGameboard.flat()[randomMove];
 
 		if (move[2] === 'empty' && movesList.includes(move) === false) {
 			movesList.push(move);
 		} else if (move[2] === 'ship' && movesList.includes(move) === false) {
 			movesList.push(move);
 		} else {
-			computerAttack();
+			computerAttack(playerGameboard);
 		}
 		return `${move[0]}, ${move[1]}`;
 	}
 
 	return {
 		getPlayerName,
-		playerAttack,
+		// playerAttack,
 		isCurrentPlayer,
-		computerAttack: gameboard => computerAttack(gameboard),
+		computerAttack,
 	};
 }
 

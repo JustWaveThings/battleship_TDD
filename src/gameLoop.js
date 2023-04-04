@@ -20,8 +20,13 @@ const computerShips = [
 	ShipFactory(5),
 ];
 
-const newPlayerBoard = GameboardFactory(newPlayer, playerShips);
-const newComputerBoard = GameboardFactory(newComputer, computerShips);
+const newPlayerBoard = GameboardFactory(newPlayer.getPlayerName(), playerShips);
+const newComputerBoard = GameboardFactory(
+	newComputer.getPlayerName(),
+	computerShips
+);
+
+console.log(newPlayerBoard);
 
 const domPlayerBoard = domNewMethods.createGameboard(
 	newPlayerBoard.gameboard,
@@ -57,9 +62,13 @@ function newGameLoop() {
 	newComputerBoard.placeShip(computerShips[1], '7, 6', 'horizontal');
 	newComputerBoard.placeShip(computerShips[0], '0, 5', 'horizontal');
 
-	domNewMethods.addPlayerAttackListener(newComputerBoard.receiveAttack);
+	domNewMethods.addPlayerAttackListener(coodinates => {
+		newComputerBoard.receiveAttack(coodinates);
+	});
 
 	newComputerBoard.receiveAttack();
+
+	newPlayerBoard.receiveAttack();
 }
 
 newGameLoop();
