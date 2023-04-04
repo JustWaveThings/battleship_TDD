@@ -183,41 +183,19 @@ const domNewMethods = {
 		});
 	},
 
-	/* 	playerInput(e, computerBoard, playerBoard, computer) {
-		const rowCol = e.target.dataset.rowCol;
-		const x = +rowCol[0];
-		const y = +rowCol[3];
-		const attack = [x, y];
-		computer.playerAttack(attack);
-		const newStatus = computerBoard.gameboard[x][y][2];
-		const computerCell = document.querySelector(
-			`section.computer-board .cell[data-row-col="${x}, ${y}"]`
-		);
-		computerCell.dataset.status = newStatus;
-		this.computerInput(playerBoard, computer);
-		this.gameEnd(computerBoard, playerBoard);
-	},
-	computerInput(playerBoard, computer) {
-		const computerAttack = computer.computerAttack();
-		const [x, y] = computerAttack;
-		playerBoard.receiveAttack(computerAttack);
-		const newStatus = playerBoard.gameboard[x][y][2];
-		const playerCell = document.querySelector(
-			`section.player-board .cell[data-row-col="${x}, ${y}"]`
-		);
-		playerCell.dataset.status = newStatus;
-	},
 	gameEnd(computerBoard, playerBoard) {
 		// display modal that says game over and asks if you want to play again
 		// if yes, call gameStart()
 		// if no, close modal
 		if (computerBoard.allShipsSunk()) {
+			alert('player wins');
 			console.log('player wins');
 		}
 		if (playerBoard.allShipsSunk()) {
+			alert('computer wins');
 			console.log('computer wins');
-		} */
-
+		}
+	},
 	playerInput(e, callback) {
 		const cellClicked = e.target.dataset.rowCol;
 		console.log('player attack computer board', cellClicked);
@@ -227,36 +205,20 @@ const domNewMethods = {
 			`section.computer-board .cell[data-row-col="${x}, ${y}"]`
 		);
 		computerCell.dataset.status = newStatus;
+		domNewMethods.gameEnd(newComputerBoard, newPlayerBoard);
 	},
 	computerInput(playerBoard, computer) {
-		let validAttack = false;
 		let computerAttack;
 		let newStatus;
-		while (!validAttack) {
-			computerAttack = computer.computerAttack(playerBoard.gameboard);
-			const x = +computerAttack[0];
-			const y = +computerAttack[3];
 
-			newStatus = playerBoard.gameboard[x][y][2];
+		computerAttack = computer.computerAttack(playerBoard.gameboard);
+		const x = +computerAttack[0];
+		const y = +computerAttack[3];
 
-			if (newStatus === 'empty' || newStatus === 'buffer') {
-				validAttack = true;
-			}
-		}
+		newStatus = playerBoard.gameboard[x][y][2];
 
 		playerBoard.receiveAttack(computerAttack);
-	},
-
-	gameEnd(computerBoard, playerBoard) {
-		// display modal that says game over and asks if you want to play again
-		// if yes, call gameStart()
-		// if no, close modal
-		if (computerBoard.allShipsSunk()) {
-			console.log('player wins');
-		}
-		if (playerBoard.allShipsSunk()) {
-			console.log('computer wins');
-		}
+		domNewMethods.gameEnd(newComputerBoard, newPlayerBoard);
 	},
 };
 export default domNewMethods;
