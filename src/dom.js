@@ -1,4 +1,4 @@
-import { newComputer, newPlayerBoard } from './gameLoop.js';
+import { newComputer, newPlayerBoard, newComputerBoard } from './gameLoop.js';
 
 const domNewMethods = {
 	initializeEventListeners(playerBoardContainer, gameboard, player) {
@@ -127,8 +127,17 @@ const domNewMethods = {
 						instructionsContainer.style.display = 'none';
 						instructionsDiv.style.display = 'none';
 						nextShipButton.style.display = 'none';
-						selectedCell.classList.remove('ship');
-						selectedCell.removeAttribute('data-orientation');
+						// console.log(gameboard);
+						gameboard.forEach((row, i) => {
+							row.forEach((_, j) => {
+								const cellElement = document.querySelector(
+									`div.cell[data-row-col="${i}, ${j}"]`
+								);
+								cellElement.classList.remove('ship');
+								cellElement.removeAttribute('data-orientation');
+							});
+						});
+
 						boardContainer.removeEventListener('click', handleOrientationClick);
 						boardContainer.removeEventListener('click', handleCellClick);
 						return;
@@ -167,33 +176,68 @@ const domNewMethods = {
 		computerCells.forEach(cell => {
 			cell.addEventListener('click', e => {
 				const { rowCol } = e.target.dataset;
-				console.log('player attack computer board', rowCol);
+				// console.log('player attack computer board', rowCol);
 				callback(rowCol);
 				this.computerInput(newPlayerBoard, newComputer);
 			});
 		});
 	},
 
+	/* 	playerInput(e, computerBoard, playerBoard, computer) {
+		const rowCol = e.target.dataset.rowCol;
+		const x = +rowCol[0];
+		const y = +rowCol[3];
+		const attack = [x, y];
+		computer.playerAttack(attack);
+		const newStatus = computerBoard.gameboard[x][y][2];
+		const computerCell = document.querySelector(
+			`section.computer-board .cell[data-row-col="${x}, ${y}"]`
+		);
+		computerCell.dataset.status = newStatus;
+		this.computerInput(playerBoard, computer);
+		this.gameEnd(computerBoard, playerBoard);
+	},
+	computerInput(playerBoard, computer) {
+		const computerAttack = computer.computerAttack();
+		const [x, y] = computerAttack;
+		playerBoard.receiveAttack(computerAttack);
+		const newStatus = playerBoard.gameboard[x][y][2];
+		const playerCell = document.querySelector(
+			`section.player-board .cell[data-row-col="${x}, ${y}"]`
+		);
+		playerCell.dataset.status = newStatus;
+	},
+	gameEnd(computerBoard, playerBoard) {
+		// display modal that says game over and asks if you want to play again
+		// if yes, call gameStart()
+		// if no, close modal
+		if (computerBoard.allShipsSunk()) {
+			console.log('player wins');
+		}
+		if (playerBoard.allShipsSunk()) {
+			console.log('computer wins');
+		} */
+
 	playerInput(e, callback) {
 		const cellClicked = e.target.dataset.rowCol;
 		console.log('player attack computer board', cellClicked);
 		callback(cellClicked);
 		this.computerInput(newPlayerBoard, newComputer);
+		const computerCell = document.querySelector(
+			`section.computer-board .cell[data-row-col="${x}, ${y}"]`
+		);
+		computerCell.dataset.status = newStatus;
 	},
 	computerInput(playerBoard, computer) {
 		let validAttack = false;
 		let computerAttack;
-
+		let newStatus;
 		while (!validAttack) {
 			computerAttack = computer.computerAttack(playerBoard.gameboard);
 			const x = +computerAttack[0];
 			const y = +computerAttack[3];
 
-			console.log(
-				playerBoard.gameboard[x][y][2],
-				'- playerboard status for that cell'
-			);
-			const newStatus = playerBoard.gameboard[x][y][2];
+			newStatus = playerBoard.gameboard[x][y][2];
 
 			if (newStatus === 'empty' || newStatus === 'buffer') {
 				validAttack = true;

@@ -82,7 +82,7 @@ function GameboardFactory(player, shipList) {
 		let tentativeShipCoords = [];
 		if (axis === 'horizontal') {
 			if (y + shipLength > 10) {
-				console.log('y + shipLength > 10', y + shipLength);
+				//		console.log('y + shipLength > 10', y + shipLength);
 				alert(
 					'Invalid ship placement, ship must be completely on the gameboard, reload page and try again'
 				);
@@ -95,7 +95,7 @@ function GameboardFactory(player, shipList) {
 		}
 		if (axis === 'vertical') {
 			if (x + shipLength > 10) {
-				console.log('x + shipLength > 10', x + shipLength);
+				//		console.log('x + shipLength > 10', x + shipLength);
 				alert(
 					'Invalid ship placement, ship must be completely on the gameboard, reload page and try again'
 				);
@@ -116,10 +116,10 @@ function GameboardFactory(player, shipList) {
 		}
 		const x = [...position][0];
 		const y = [...position][3];
-		const space = gameboard[x][y];
-		console.log(x, y, typeof x, typeof y, 'x and y', space, 'space');
+		const space = this.gameboard[x][y];
+		//console.log(this.gameboard); // proves the attacks are going to the right place
 
-		console.log(space, 'from gameboard array');
+		//	console.log(space, 'from gameboard array');
 		if (space[2] === 'ship' || space[2] === 'ship bow') {
 			space[2] = 'hit';
 		} else if (space[2] === 'miss' || space[2] === 'hit') {
@@ -129,13 +129,27 @@ function GameboardFactory(player, shipList) {
 			space[2] = 'miss';
 			trackMissedAttacks(space);
 		}
-		console.log(space, 'after the attack');
+		//	console.log(space, 'after the attack');
+
+		if (this.player === 'COMPUTER') {
+			const computerCell = document.querySelector(
+				`section.computer-board .cell[data-row-col="${x}, ${y}"]`
+			);
+			computerCell.dataset.status = space[2];
+		}
+		if (this.player !== 'COMPUTER') {
+			const playerCell = document.querySelector(
+				`section.player-board .cell[data-row-col="${x}, ${y}"]`
+			);
+
+			playerCell.dataset.status = space[2];
+		}
 		console.log('-------an attack over ----------');
 	}
 
 	function trackMissedAttacks(miss) {
 		missedAttacksList.push(miss);
-		console.log(missedAttacksList, 'missed attacks list');
+		// console.log(missedAttacksList, 'missed attacks list');
 	}
 
 	function allShipsSunk() {

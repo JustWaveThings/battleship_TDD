@@ -26,8 +26,6 @@ const newComputerBoard = GameboardFactory(
 	computerShips
 );
 
-console.log(newPlayerBoard);
-
 const domPlayerBoard = domNewMethods.createGameboard(
 	newPlayerBoard.gameboard,
 	newPlayer.getPlayerName()
@@ -73,4 +71,4 @@ function newGameLoop() {
 
 newGameLoop();
 
-export { newComputer, newPlayerBoard };
+export { newComputer, newPlayerBoard, newComputerBoard };
