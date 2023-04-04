@@ -1,53 +1,40 @@
-function PlayerFactory(name, gameboard) {
-	let computerMovesList = [];
+function PlayerFactory(name) {
 	function getPlayerName() {
 		return name;
 	}
 
-	function playerMove(x, y) {
-		return [x, y];
-	}
-	function playerAttack(move) {
-		gameboard.receiveAttack(move);
+	function playerAttack(position) {
+		console.log(' in playerAttack in player.js', position);
+		gameboard.receiveAttack(position);
 	}
 
 	function isCurrentPlayer(turn) {
 		turn++;
 		return turn % 2 === 0 ? true : false;
 	}
-
-	function computerAttack() {
-		const move = computerMove();
-		const [x, y] = move;
-		gameboard.receiveAttack(move);
-		return move;
-	}
-	function computerMove() {
-		const randomMove = Math.floor(
-			Math.random() * gameboard.gameboard.flat().length
-		);
-		let move = gameboard.gameboard.flat()[randomMove];
-
-		if (
-			move[2] === 'empty' ||
-			move[2] === 'buffer' ||
-			(move[2] === 'ship' && computerMovesList.includes(move) === false)
-		) {
-			computerMovesList.push(move);
-			console.log(computerMovesList, 'computerMovesList');
-		} else {
-			return computerMove();
+	let movesList = [];
+	function computerAttack(playerGameboard) {
+		if (movesList.length > 100) {
+			throw new Error('All moves have been made');
 		}
-
-		return [move[0], move[1]];
+		const randomMoveX = Math.floor(Math.random() * 10);
+		const randomMoveY = Math.floor(Math.random() * 10);
+		let move = `${randomMoveX}, ${randomMoveY}`;
+		console.log('move', move);
+		if (!movesList.includes(move)) {
+			movesList.push(move);
+			return move;
+		}
+		if (movesList.includes(move)) {
+			return computerAttack(playerGameboard);
+		}
 	}
 
 	return {
 		getPlayerName,
-		playerMove,
+		playerAttack,
 		isCurrentPlayer,
 		computerAttack,
-		playerAttack,
 	};
 }
 

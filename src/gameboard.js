@@ -1,17 +1,9 @@
-// add starting status to each square on the board of empty - but keep the rest for future use
-// empty
-// ship
-// miss
-// hit
-// buffer
-
-function GameboardFactory() {
+function GameboardFactory(player, shipList) {
 	const gameboard = Array.from({ length: 10 }, (_, i) =>
 		Array.from({ length: 10 }, (_, j) => [i, j])
 	);
 
 	let missedAttacksList = [];
-	let ships = [];
 
 	gameboard.map(row => {
 		row.map(space => {
@@ -20,7 +12,9 @@ function GameboardFactory() {
 	});
 
 	function placeShip(ship, bowPosition, axis) {
-		const [x, y] = bowPosition;
+		const x = +bowPosition[0];
+		const y = +bowPosition[3];
+
 		const shipLength = ship.length;
 		const tentShipCoords = horizonatalOrVerticalPlacement(
 			axis,
@@ -28,24 +22,23 @@ function GameboardFactory() {
 			x,
 			y
 		);
-		tentShipCoords.forEach(space => {
-			if (
-				space[2] === 'empty' ||
-				space[2] === 'buffer' ||
-				space[2] === 'ship'
-			) {
-				space[2] = 'ship';
+
+		tentShipCoords.forEach((space, index) => {
+			if (space[2] === 'empty') {
+				if (index === 0) {
+					space[2] = 'ship bow';
+				} else {
+					space[2] = 'ship';
+				}
 			} else {
-				console.log(space[2], 'space[2]');
-				throw new Error('Invalid ship placement on board');
+				alert(
+					'Invalid ship placement, must have at least one square buffer, reload page and try again'
+				);
+				return false;
 			}
 		});
-		ships.push({
-			ship,
-			position: bowPosition,
-			orientation: axis,
-		});
 		shipGiveOneSpaceBuffer();
+		return true;
 	}
 
 	function shipGiveOneSpaceBuffer() {
@@ -61,16 +54,16 @@ function GameboardFactory() {
 		];
 		gameboard.forEach((row, i) => {
 			row.forEach((space, j) => {
-				if (space[2] === 'ship') {
+				if (space[2] === 'ship' || space[2] === 'ship bow') {
 					relativePositionOfSurroundingSquares.forEach(([x, y]) => {
 						const bufferRow = i + x;
 						const bufferCol = j + y;
 						// guard clause...
 						if (
 							bufferRow < 0 ||
-							bufferRow > gameboard.length ||
+							bufferRow > gameboard.length - 1 ||
 							bufferCol < 0 ||
-							bufferCol > row.length
+							bufferCol > row.length - 1
 						) {
 							return;
 						}
@@ -88,7 +81,11 @@ function GameboardFactory() {
 	function horizonatalOrVerticalPlacement(axis, shipLength, x, y) {
 		let tentativeShipCoords = [];
 		if (axis === 'horizontal') {
-			if (x + shipLength > 10) {
+			if (y + shipLength > 10) {
+				//		console.log('y + shipLength > 10', y + shipLength);
+				alert(
+					'Invalid ship placement, ship must be completely on the gameboard, reload page and try again'
+				);
 				throw new Error('Invalid ship placement off board');
 			}
 			for (let i = 0; i < shipLength; i++) {
@@ -97,7 +94,11 @@ function GameboardFactory() {
 			}
 		}
 		if (axis === 'vertical') {
-			if (y + shipLength > 10) {
+			if (x + shipLength > 10) {
+				//		console.log('x + shipLength > 10', x + shipLength);
+				alert(
+					'Invalid ship placement, ship must be completely on the gameboard, reload page and try again'
+				);
 				throw new Error('Invalid ship placement off board');
 			}
 			for (let i = 0; i < shipLength; i++) {
@@ -110,19 +111,45 @@ function GameboardFactory() {
 	}
 
 	function receiveAttack(position) {
-		const [x, y] = position;
+		if (position === undefined) {
+			return;
+		}
+		const x = [...position][0];
+		const y = [...position][3];
+		const space = this.gameboard[x][y];
+		//console.log(this.gameboard); // proves the attacks are going to the right place
 
-		const space = gameboard[x][y];
-		if (space[2] === 'ship' || space[2] === 'hit') {
+		//	console.log(space, 'from gameboard array');
+		if (space[2] === 'ship' || space[2] === 'ship bow') {
 			space[2] = 'hit';
+		} else if (space[2] === 'miss' || space[2] === 'hit') {
+			alert('You already attacked this space - you lose your turn');
+			throw new Error('You already attacked this space');
 		} else {
 			space[2] = 'miss';
-			// trackMissedAttacks(space);
+			trackMissedAttacks(space);
 		}
+		//	console.log(space, 'after the attack');
+
+		if (this.player === 'COMPUTER') {
+			const computerCell = document.querySelector(
+				`section.computer-board .cell[data-row-col="${x}, ${y}"]`
+			);
+			computerCell.dataset.status = space[2];
+		}
+		if (this.player !== 'COMPUTER') {
+			const playerCell = document.querySelector(
+				`section.player-board .cell[data-row-col="${x}, ${y}"]`
+			);
+
+			playerCell.dataset.status = space[2];
+		}
+		console.log('-------an attack over ----------');
 	}
 
 	function trackMissedAttacks(miss) {
 		missedAttacksList.push(miss);
+		// console.log(missedAttacksList, 'missed attacks list');
 	}
 
 	function allShipsSunk() {
@@ -134,17 +161,14 @@ function GameboardFactory() {
 		return areAllShipsSunk;
 	}
 
-	function getShips() {
-		return ships;
-	}
-
 	return {
+		player,
+		shipList,
 		gameboard,
 		placeShip,
 		receiveAttack,
 		allShipsSunk,
 		missedAttacksList,
-		getShips,
 	};
 }
 

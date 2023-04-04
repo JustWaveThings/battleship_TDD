@@ -1,69 +1,74 @@
-import domMethods from './display.js';
+import domNewMethods from './dom.js';
 import GameboardFactory from './gameboard.js';
 import PlayerFactory from './player.js';
 import ShipFactory from './shipFactory.js';
 
-function gameLoop() {
-	function gameStart(shipPlacements) {
-		domMethods.createGridItems();
-		domMethods.updatePreviewShip();
-		domMethods.previewListener();
+const newPlayer = PlayerFactory('TERRY');
+const newComputer = PlayerFactory('COMPUTER');
+const playerShips = [
+	ShipFactory(2),
+	ShipFactory(3),
+	ShipFactory(3),
+	ShipFactory(4),
+	ShipFactory(5),
+];
+const computerShips = [
+	ShipFactory(2),
+	ShipFactory(3),
+	ShipFactory(3),
+	ShipFactory(4),
+	ShipFactory(5),
+];
 
-		const playerBoard = GameboardFactory();
-		const computerBoard = GameboardFactory();
-		console.log(playerBoard, computerBoard);
-		const player = PlayerFactory('Player', playerBoard);
-		const computer = PlayerFactory('Computer', computerBoard);
+const newPlayerBoard = GameboardFactory(newPlayer.getPlayerName(), playerShips);
+const newComputerBoard = GameboardFactory(
+	newComputer.getPlayerName(),
+	computerShips
+);
 
-		const carrier = ShipFactory(5);
-		const battleship = ShipFactory(4);
-		const cruiser = ShipFactory(3);
-		const submarine = ShipFactory(3);
-		const destroyer = ShipFactory(2);
+const domPlayerBoard = domNewMethods.createGameboard(
+	newPlayerBoard.gameboard,
+	newPlayer.getPlayerName()
+);
+const domComputerBoard = domNewMethods.createGameboard(
+	newComputerBoard.gameboard,
+	newComputer.getPlayerName()
+);
 
-		domMethods.renderGame(playerBoard, computerBoard);
-		playerBoard.placeShip(
-			carrier,
-			shipPlacements.carrier.position,
-			shipPlacements.carrier.alignment
-		);
-		playerBoard.placeShip(
-			battleship,
-			shipPlacements.battleship.position,
-			shipPlacements.battleship.alignment
-		);
-		playerBoard.placeShip(
-			cruiser,
-			shipPlacements.cruiser.position,
-			shipPlacements.cruiser.alignment
-		);
-		playerBoard.placeShip(
-			submarine,
-			shipPlacements.submarine.position,
-			shipPlacements.submarine.alignment
-		);
-		playerBoard.placeShip(
-			destroyer,
-			shipPlacements.destroyer.position,
-			shipPlacements.destroyer.alignment
-		);
-		/* playerBoard.placeShip(carrier, [carrierX, carrierY], carrierAlignment);
-		playerBoard.placeShip(battleship, [3, 3], 'horizontal');
-		playerBoard.placeShip(cruiser, [5, 0], 'horizontal');
-		playerBoard.placeShip(destroyer, [7, 0], 'horizontal');
-		playerBoard.placeShip(submarine, [7, 6], 'horizontal'); */
+const playerBoardContainer = document.querySelector('section.player-board');
+const computerBoardContainer = document.querySelector('section.computer-board');
+playerBoardContainer.appendChild(domPlayerBoard);
+computerBoardContainer.appendChild(domComputerBoard);
 
-		computerBoard.placeShip(carrier, [1, 1], 'vertical');
-		computerBoard.placeShip(battleship, [3, 0], 'horizontal');
-		computerBoard.placeShip(cruiser, [5, 3], 'vertical');
-		computerBoard.placeShip(destroyer, [5, 8], 'horizontal');
-		computerBoard.placeShip(submarine, [8, 1], 'horizontal');
+domNewMethods.placePlayerShipsAtStart(
+	playerShips,
+	newPlayerBoard,
+	newPlayerBoard.gameboard,
+	newPlayer.getPlayerName()
+);
 
-		domMethods.addPlayerAttackListener(computerBoard, computer, playerBoard);
-	}
-	const shipPlacements = domMethods.shipPlacements();
+domNewMethods.initializeEventListeners(
+	playerBoardContainer,
+	newPlayerBoard.gameboard,
+	newPlayer.getPlayerName()
+);
 
-	gameStart(shipPlacements);
+function newGameLoop() {
+	newComputerBoard.placeShip(computerShips[4], '0, 0', 'vertical');
+	newComputerBoard.placeShip(computerShips[3], '3, 3', 'horizontal');
+	newComputerBoard.placeShip(computerShips[2], '5, 3', 'vertical');
+	newComputerBoard.placeShip(computerShips[1], '7, 6', 'horizontal');
+	newComputerBoard.placeShip(computerShips[0], '0, 5', 'horizontal');
+
+	domNewMethods.addPlayerAttackListener(coodinates => {
+		newComputerBoard.receiveAttack(coodinates);
+	});
+
+	newComputerBoard.receiveAttack();
+
+	newPlayerBoard.receiveAttack();
 }
 
-export default gameLoop;
+newGameLoop();
+
+export { newComputer, newPlayerBoard, newComputerBoard };
