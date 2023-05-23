@@ -1,5 +1,5 @@
-import GameboardFactory from './gameboard';
-import ShipFactory from './shipFactory';
+import GameboardFactory from "./gameboard";
+import ShipFactory from "./shipFactory";
 
 /*
 write tests for gameboard factory function
@@ -21,114 +21,114 @@ What is the public interface for the gameboard?
 
 */
 
-describe('GameboardFactory', () => {
-	let gameboard;
-	beforeEach(() => {
-		gameboard = GameboardFactory();
-	});
+describe("GameboardFactory", () => {
+  let gameboard;
+  beforeEach(() => {
+    gameboard = GameboardFactory();
+  });
 
-	describe('placeShip', () => {
-		test('should pass a test to confirm a square is empty as sanity check and board exists', () => {
-			expect(gameboard.gameboard[0][4][2]).toBe('empty');
-		});
-		test('should place a single ship at valid position on an empty squares', () => {
-			// Test placing ships at valid positions
-			const ship = ShipFactory(5);
-			gameboard.placeShip(ship, [0, 0], 'horizontal');
-			expect(gameboard.gameboard[0][4][2]).toBe('ship');
-		});
+  describe("placeShip", () => {
+    test("should pass a test to confirm a square is empty as sanity check and board exists", () => {
+      expect(gameboard.gameboard[0][4][2]).toBe("empty");
+    });
+    test("should place a single ship at valid position on an empty squares", () => {
+      // Test placing ships at valid positions
+      const ship = ShipFactory(5);
+      gameboard.placeShip(ship, [0, 0], "horizontal");
+      expect(gameboard.gameboard[0][4][2]).toBe("ship");
+    });
 
-		test('should not place ships on invalid positions off board', () => {
-			// Test placing ships on invalid positions and checking for error
-			expect(() =>
-				gameboard.placeShip(ShipFactory(5), [10, 10], 'horizontal')
-			).toThrow('Invalid ship placement off board');
-		});
+    test("should not place ships on invalid positions off board", () => {
+      // Test placing ships on invalid positions and checking for error
+      expect(() =>
+        gameboard.placeShip(ShipFactory(5), [10, 10], "horizontal")
+      ).toThrow("Invalid ship placement off board");
+    });
 
-		test('should not place ships on invalid positions on board', () => {
-			// Test placing ships on invalid positions and checking for error
-			gameboard.placeShip(ShipFactory(5), [0, 0], 'horizontal');
-			expect(() =>
-				gameboard.placeShip(ShipFactory(5), [0, 4], 'horizontal')
-			).toThrow('Invalid ship placement on board');
-		});
+    test("should not place ships on invalid positions on board", () => {
+      // Test placing ships on invalid positions and checking for error
+      gameboard.placeShip(ShipFactory(5), [0, 0], "horizontal");
+      expect(() =>
+        gameboard.placeShip(ShipFactory(5), [0, 4], "horizontal")
+      ).toThrow("Invalid ship placement on board");
+    });
 
-		test('should place a 1 space buffer around newly placed ship', () => {
-			// Test placing ships with less than a 1 space gap and checking for error
-			gameboard.placeShip(ShipFactory(5), [0, 0], 'horizontal');
-			expect(gameboard.gameboard[0][5][2]).toBe('buffer');
-		});
-	});
+    test("should place a 1 space buffer around newly placed ship", () => {
+      // Test placing ships with less than a 1 space gap and checking for error
+      gameboard.placeShip(ShipFactory(5), [0, 0], "horizontal");
+      expect(gameboard.gameboard[0][5][2]).toBe("buffer");
+    });
+  });
 
-	describe('receiveAttack', () => {
-		test('should mark a hit on a ship when attacked', () => {
-			// Test attacking a ship and checking for a hit
-			const ship = ShipFactory(5);
-			gameboard.placeShip(ship, [0, 0], 'horizontal');
-			gameboard.receiveAttack([0, 0]);
-			expect(gameboard.gameboard[0][0][2]).toBe('hit');
-		});
+  describe("receiveAttack", () => {
+    test("should mark a hit on a ship when attacked", () => {
+      // Test attacking a ship and checking for a hit
+      const ship = ShipFactory(5);
+      gameboard.placeShip(ship, [0, 0], "horizontal");
+      gameboard.receiveAttack([0, 0]);
+      expect(gameboard.gameboard[0][0][2]).toBe("hit");
+    });
 
-		test('should mark a miss when no ship is attacked', () => {
-			// Test attacking an empty spot and checking for a miss
-			const ship = ShipFactory(5);
-			gameboard.placeShip(ship, [0, 0], 'horizontal');
-			gameboard.receiveAttack([1, 0]);
-			expect(gameboard.gameboard[1][0][2]).toBe('miss');
-		});
+    test("should mark a miss when no ship is attacked", () => {
+      // Test attacking an empty spot and checking for a miss
+      const ship = ShipFactory(5);
+      gameboard.placeShip(ship, [0, 0], "horizontal");
+      gameboard.receiveAttack([1, 0]);
+      expect(gameboard.gameboard[1][0][2]).toBe("miss");
+    });
 
-		test('should not allow the same spot to be attacked twice', () => {
-			// Test attacking the same spot twice and checking for error
-			const ship = ShipFactory(5);
-			gameboard.placeShip(ship, [0, 0], 'horizontal');
-			gameboard.receiveAttack([0, 0]);
-			gameboard.receiveAttack([0, 0]);
-			expect(() => gameboard.receiveAttack([0, 0])).toThrow(
-				'You already attacked this space'
-			);
-		});
-	});
+    test("should not allow the same spot to be attacked twice", () => {
+      // Test attacking the same spot twice and checking for error
+      const ship = ShipFactory(5);
+      gameboard.placeShip(ship, [0, 0], "horizontal");
+      gameboard.receiveAttack([0, 0]);
+      gameboard.receiveAttack([0, 0]);
+      expect(() => gameboard.receiveAttack([0, 0])).toThrow(
+        "You already attacked this space"
+      );
+    });
+  });
 
-	describe('allShipsSunk', () => {
-		test('should report true when all ships have been sunk', () => {
-			// Test sinking all ships and checking for true
-			const ship = ShipFactory(5);
-			gameboard.placeShip(ship, [0, 0], 'horizontal');
-			gameboard.receiveAttack([0, 0]);
-			gameboard.receiveAttack([0, 1]);
-			gameboard.receiveAttack([0, 2]);
-			gameboard.receiveAttack([0, 3]);
-			gameboard.receiveAttack([0, 4]);
-			expect(gameboard.allShipsSunk()).toBe(true);
-		});
+  describe("allShipsSunk", () => {
+    test("should report true when all ships have been sunk", () => {
+      // Test sinking all ships and checking for true
+      const ship = ShipFactory(5);
+      gameboard.placeShip(ship, [0, 0], "horizontal");
+      gameboard.receiveAttack([0, 0]);
+      gameboard.receiveAttack([0, 1]);
+      gameboard.receiveAttack([0, 2]);
+      gameboard.receiveAttack([0, 3]);
+      gameboard.receiveAttack([0, 4]);
+      expect(gameboard.allShipsSunk()).toBe(true);
+    });
 
-		test('should report false when not all ships have been sunk', () => {
-			// Test not sinking all ships and checking for false
-			const ship = ShipFactory(5);
-			gameboard.placeShip(ship, [0, 0], 'horizontal');
-			gameboard.receiveAttack([0, 0]);
-			gameboard.receiveAttack([0, 1]);
-			gameboard.receiveAttack([0, 2]);
-			gameboard.receiveAttack([0, 3]);
-			expect(gameboard.allShipsSunk()).toBe(false);
-		});
-	});
+    test("should report false when not all ships have been sunk", () => {
+      // Test not sinking all ships and checking for false
+      const ship = ShipFactory(5);
+      gameboard.placeShip(ship, [0, 0], "horizontal");
+      gameboard.receiveAttack([0, 0]);
+      gameboard.receiveAttack([0, 1]);
+      gameboard.receiveAttack([0, 2]);
+      gameboard.receiveAttack([0, 3]);
+      expect(gameboard.allShipsSunk()).toBe(false);
+    });
+  });
 
-	describe('missedAttacks', () => {
-		test('should keep track of missed attacks', () => {
-			// Test missed attacks and checking the missedAttacks array
-			gameboard.receiveAttack([0, 0]);
-			gameboard.receiveAttack([0, 1]);
-			gameboard.receiveAttack([0, 2]);
-			gameboard.receiveAttack([0, 3]);
-			gameboard.receiveAttack([0, 4]);
-			expect(gameboard.missedAttacksList).toEqual([
-				[0, 0, 'miss'],
-				[0, 1, 'miss'],
-				[0, 2, 'miss'],
-				[0, 3, 'miss'],
-				[0, 4, 'miss'],
-			]);
-		});
-	});
+  describe("missedAttacks", () => {
+    test("should keep track of missed attacks", () => {
+      // Test missed attacks and checking the missedAttacks array
+      gameboard.receiveAttack([0, 0]);
+      gameboard.receiveAttack([0, 1]);
+      gameboard.receiveAttack([0, 2]);
+      gameboard.receiveAttack([0, 3]);
+      gameboard.receiveAttack([0, 4]);
+      expect(gameboard.missedAttacksList).toEqual([
+        [0, 0, "miss"],
+        [0, 1, "miss"],
+        [0, 2, "miss"],
+        [0, 3, "miss"],
+        [0, 4, "miss"],
+      ]);
+    });
+  });
 });
